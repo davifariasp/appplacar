@@ -25,7 +25,8 @@ class PreviousGamesActivity : AppCompatActivity() {
         recyclerview.layoutManager = LinearLayoutManager(this)
 
         // ArrayList enviado ao Adapter
-        val adapter = CustomAdapter(bd)
+        //lista mostrando somente os últimos 5 jogos
+        val adapter = CustomAdapter(bd.reversed().slice(0..4)) //para os ultimos jogos ficarem em primeiro
 
         // Setando o Adapter no Recyclerview
         recyclerview.adapter = adapter

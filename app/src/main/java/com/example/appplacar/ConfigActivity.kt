@@ -20,8 +20,9 @@ class ConfigActivity : AppCompatActivity() {
 
         bd = getIntent().getExtras()?.getSerializable("bd") as ArrayList<Placar>
 
-        openConfig()
         initInterface()
+        openConfig()
+
     }
 
     //configurando o placar
@@ -29,7 +30,6 @@ class ConfigActivity : AppCompatActivity() {
         val sharedFilename = "configPlacar"
         val sp: SharedPreferences = getSharedPreferences(sharedFilename, Context.MODE_PRIVATE)
         var edShared = sp.edit()
-
 
         edShared.putString("matchname",placar.nome_partida)
         edShared.putBoolean("has_timer",placar.has_timer)
@@ -48,9 +48,9 @@ class ConfigActivity : AppCompatActivity() {
     //
     fun initInterface(){
         val tv= findViewById<EditText>(R.id.editTextGameName)
-        tv.setText(placar.nome_partida)
+        tv.setHint("Digite o nome da partida")
         val sw= findViewById<Switch>(R.id.swTimer)
-        sw.isChecked=placar.has_timer
+        sw.isChecked= false
     }
 
     //

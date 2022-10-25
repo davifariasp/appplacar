@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import com.google.android.material.snackbar.Snackbar
 import data.Placar
 import java.io.ByteArrayInputStream
 import java.io.ObjectInputStream
@@ -16,6 +17,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val finalizado: Boolean = intent.getBooleanExtra("finalizado", false)
+
+        if(finalizado){
+            exibirMsg(findViewById(R.id.tela_main))
+            //Log.v("Main", "Finalizado")
+        }
     }
 
     //abrindo "bd"
@@ -43,6 +51,14 @@ class MainActivity : AppCompatActivity() {
             cont++
         }
         return data
+    }
+
+    fun exibirMsg (v: View){
+        val duration= Snackbar.LENGTH_LONG
+        val text= "O jogo foi finalizado com sucesso!"
+
+        val snack= Snackbar.make(v, text, duration)
+        snack.show()
     }
 
     //configurar um novo jogo
