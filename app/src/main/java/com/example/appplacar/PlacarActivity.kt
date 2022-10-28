@@ -19,10 +19,16 @@ import java.util.Locale
 class PlacarActivity: AppCompatActivity() {
     lateinit var bd:ArrayList<Placar>
     lateinit var placar:Placar
-    lateinit var tvResultadoJogo: TextView
+    lateinit var tvPlacarA: TextView
+    lateinit var tvPlacarB: TextView
 
-    var resultadoAnterior = ""
-    var game = 0
+    var pa = 0 //pontos a
+    var pa_anterior = 0
+    var alta = false
+
+    var pb = 0 //potos b
+    var pb_anterior = 0
+    var altb = false
 
     //Cronometro
     val START_TIME_IN_MILLIS: Long = 601000
@@ -50,10 +56,12 @@ class PlacarActivity: AppCompatActivity() {
             mTextViewCountDown!!.text = ""
         }
 
-        tvResultadoJogo= findViewById(R.id.tvPlacar)
+        tvPlacarA= findViewById(R.id.tvPlacarA)
+        tvPlacarB= findViewById(R.id.tvPlacarB)
+
         //Mudar o nome da partida
-        val tvNomePartida=findViewById(R.id.tvNomePartida2) as TextView
-        tvNomePartida.text=placar.nome_partida
+        val tvNomePartida=findViewById(R.id.idNomePartida) as TextView
+        tvNomePartida.text=placar.id_partida
     }
 
 
@@ -94,26 +102,54 @@ class PlacarActivity: AppCompatActivity() {
         mTextViewCountDown!!.text = timeLeftFormatted
     }
 
-    //ao clicar no texto do placar ele é alterado
-    fun alteraPlacar (v: View){
-        game++
+    fun setPointA(v: View){
+        pa_anterior = pa
 
-        //salvando resultado anterior
-        resultadoAnterior = placar.resultado
+        pa++
+        tvPlacarA.text = "${pa}"
+        placar.resultado = "${pa} x ${pb}"
 
-        if ((game % 2) != 0) {
-            placar.resultado = ""+game+" vs "+ (game-1)
-        }else{
-            placar.resultado = ""+(game-1)+" vs "+ (game-1)
+        alta = true
+        altb = false
+
+    }
+
+    fun setPointB(v: View){
+        pb_anterior = pb
+
+        pb++
+        tvPlacarB.text = "${pb}"
+        placar.resultado = "${pa} x ${pb}"
+
+        altb = true
+        alta = false
+    }
+
+    //ctrl+z do resultado
+    fun reverter(v:View){
+        var aux = 0
+
+        if(alta){
+            aux = pa
+            pa = pa_anterior
+            pa_anterior = aux
+        } else {
+            aux = pb
+            pb = pb_anterior
+            pb_anterior = aux
         }
 
-        tvResultadoJogo.text=placar.resultado
+        tvPlacarA.text = "${pa}"
+        tvPlacarB.text = "${pb}"
+
+        placar.resultado = "${pa} x ${pb}"
     }
+
 
     fun saveGame(v: View) {
         val sharedFilename = "PreviousGames"
         val sp: SharedPreferences = getSharedPreferences(sharedFilename, Context.MODE_PRIVATE)
-        placar.resultadoLongo = "O jogo ${placar.nome_partida} foi de ${placar.resultado}"
+        placar.resultadoLongo = "O jogo ${placar.id_partida} foi de ${placar.resultado}"
 
         var edShared = sp.edit()
 
@@ -122,9 +158,8 @@ class PlacarActivity: AppCompatActivity() {
 
         //Salvar o número de jogos já armazenados
         edShared.putInt("numberMatch", cont)
-        edShared.putString("nomePartida", placar.nome_partida)
-        edShared.putString("resultado", placar.resultado)
-        edShared.putString("resultadoLongo", "O")
+        edShared.putString("nomePartida", placar.id_partida)
+        edShared.putString("resultadoLongo", placar.resultadoLongo)
         edShared.putBoolean("has_timer", placar.has_timer)
 
         //Escrita em Bytes de Um objeto Serializável
@@ -134,7 +169,7 @@ class PlacarActivity: AppCompatActivity() {
 
         //Salvar como "match" + numero de partidas ja salvas
         edShared.putString("match${cont}", dt.toString(StandardCharsets.ISO_8859_1.name()))
-        Log.v("PDM", "Partida ${cont} ${placar.nome_partida} ${placar.resultado} ${placar.resultadoLongo} ${placar.has_timer} foi salva!")
+        Log.v("PDM", "Partida ${cont} ${placar.resultadoLongo} foi salva!")
         edShared.commit()
 
         //Finalizando
@@ -145,13 +180,12 @@ class PlacarActivity: AppCompatActivity() {
         startActivity(intent)
     }
 
-    //ctrl+z do resultado
-    fun reverter(v:View){
-        var placarAtual = placar.resultado
-        placar.resultado = resultadoAnterior
-        resultadoAnterior = placarAtual
 
-        tvResultadoJogo.text=placar.resultado
+    fun openPlacarH(v: View){
+        val intent = Intent(this, PlacarActivity::class.java).apply{
+            putExtra( "finalizado", true)
+        }
+        startActivity(intent)
     }
 
 }

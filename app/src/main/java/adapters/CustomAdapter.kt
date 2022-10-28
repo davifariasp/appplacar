@@ -25,7 +25,7 @@ class CustomAdapter(private val mList: List<Placar>) : RecyclerView.Adapter<Cust
     // Ligando o Recycler view a um View Holder
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         val imageView: ImageView = ItemView.findViewById(R.id.imageview)
-        val tvNomePartida: TextView = ItemView.findViewById(R.id.tvNomePartida)
+        val tvNomePartida: TextView = ItemView.findViewById(R.id.idNomePartida)
         val tvResultadoJogo: TextView = ItemView.findViewById(R.id.tvResultadoJogo)
         val lnCell: LinearLayout = ItemView.findViewById(R.id.lnCell)
     }
@@ -36,7 +36,7 @@ class CustomAdapter(private val mList: List<Placar>) : RecyclerView.Adapter<Cust
         val placarAnterior = mList[position]
 
         //alimentando os elementos a partir do objeto placar
-        holder.tvNomePartida.text = placarAnterior.nome_partida
+        holder.tvNomePartida.text = placarAnterior.id_partida
         holder.tvResultadoJogo.text = placarAnterior.resultado
 
         holder.lnCell.setOnClickListener{

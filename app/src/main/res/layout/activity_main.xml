@@ -7,11 +7,23 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="411dp"
+        android:layout_height="755dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/bg_app" />
+
     <Button
         android:id="@+id/btIniciar"
         android:layout_width="146dp"
         android:layout_height="60dp"
         android:layout_marginTop="307dp"
+        android:backgroundTint="@color/padrao"
         android:onClick="openConfig"
         android:text="Jogar"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,6 +34,7 @@
         android:id="@+id/btPreviousGame"
         android:layout_width="146dp"
         android:layout_height="60dp"
+        android:backgroundTint="@color/padrao"
         android:onClick="openPreviousGames"
         android:text="Histórico"
         app:layout_constraintEnd_toEndOf="parent"

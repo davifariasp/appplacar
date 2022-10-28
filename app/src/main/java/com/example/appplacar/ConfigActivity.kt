@@ -12,7 +12,13 @@ import data.Placar
 
 class ConfigActivity : AppCompatActivity() {
     lateinit var bd:ArrayList<Placar>
-    var placar: Placar = Placar("Jogo sem Config","0x0", "20/05/20 10h",false)
+    var placar: Placar = Placar(
+        "Equipe A",
+        "Equipe B",
+        "0x0",
+        "Equipe A x Equipe B",
+        "",
+        false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +37,7 @@ class ConfigActivity : AppCompatActivity() {
         val sp: SharedPreferences = getSharedPreferences(sharedFilename, Context.MODE_PRIVATE)
         var edShared = sp.edit()
 
-        edShared.putString("matchname",placar.nome_partida)
+        edShared.putString("matchname",placar.id_partida)
         edShared.putBoolean("has_timer",placar.has_timer)
         edShared.commit()
     }
@@ -41,23 +47,30 @@ class ConfigActivity : AppCompatActivity() {
     {
         val sharedFilename = "configPlacar"
         val sp:SharedPreferences = getSharedPreferences(sharedFilename,Context.MODE_PRIVATE)
-        placar.nome_partida=sp.getString("matchname","Jogo Padrão").toString()
+        placar.id_partida=sp.getString("matchname","Jogo Padrão").toString()
         placar.has_timer=sp.getBoolean("has_timer",false)
     }
 
     //
     fun initInterface(){
-        val tv= findViewById<EditText>(R.id.editTextGameName)
-        tv.setHint("Digite o nome da partida")
+        val eA= findViewById<EditText>(R.id.lb_a)
+        val eB= findViewById<EditText>(R.id.lb_b)
+
+        eA.setHint("Nome equipe A")
+        eB.setHint("Nome equipe B")
+
         val sw= findViewById<Switch>(R.id.swTimer)
         sw.isChecked= false
     }
 
     //
     fun updatePlacarConfig(){
-        val tv= findViewById<EditText>(R.id.editTextGameName)
+        val eA= findViewById<EditText>(R.id.lb_a)
+        val eB= findViewById<EditText>(R.id.lb_b)
+
         val sw= findViewById<Switch>(R.id.swTimer)
-        placar.nome_partida= tv.text.toString()
+
+        placar.id_partida= "${eA.text.toString()} x ${eB.text.toString()}"
         placar.has_timer=sw.isChecked
     }
 
